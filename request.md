@@ -13,10 +13,10 @@
 
 ### Courses
 
-  [] - O curso so pode ser cadastrado por um usuário administrador
-  [] - O Admin deve poder listar os **courses**
+    [] - O curso so pode ser cadastrado por um usuário administrador
+    [] - O Admin deve poder listar os **courses**
 
 ### Lessons
 
-  [] - O admin deve poder cadastrar uma **lesson** dentro de de um **course**
-  [] - O admin dever poder listar as **lessons**
+    [] - O admin deve poder cadastrar uma **lesson** dentro de de um **course**
+    [] - O admin dever poder listar as **lessons**
