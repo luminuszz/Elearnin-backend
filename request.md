@@ -20,3 +20,11 @@
 
     [] - O admin deve poder cadastrar uma **lesson** dentro de de um **course**
     [] - O admin dever poder listar as **lessons**
+
+### Relacionamentos
+
+  -Um admin deve poder cadastrar novos cursos
+  -Um admin deve poder editar e deletar cursos
+  -Um usuário deve poder se cadastrar em vários cursos.
+  -Um curso pode ter vários  usuários
+  -Um curso pode ter varias aulas
