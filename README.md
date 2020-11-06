@@ -6,7 +6,7 @@
 [travis-url]: https://travis-ci.org/nestjs/nest
 [linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
 [linux-url]: https://travis-ci.org/nestjs/nest
-  
+
   <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
     <p align="center">
 <a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
@@ -73,3 +73,23 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
   Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## Requisitos
+
+### Users
+
+    [] - Deve ser poder criar usuários
+    [] - O usuário deve estar autenticado
+    [] - O usuário não pode acessar a aplicação se não estiver autenticado
+    [] - O usuário deve poder cadastrar o curso
+    [] - O usuário deve poder atualizar o curso
+
+### Courses
+
+    [] - O curso so pode ser cadastrado por um usuário administrador
+    [] - O Admin deve poder listar os **courses**
+
+### Lessons
+
+    [] - O admin deve poder cadastrar uma **lesson** dentro de de um **course**
+    [] - O admin dever poder listar as **lessons**
