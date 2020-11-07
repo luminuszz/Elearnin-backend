@@ -5,16 +5,16 @@
 
 ### Users
 
-    [] - Deve ser poder criar usuários
-    [] - O usuário deve estar autenticado
-    [] - O usuário não pode acessar a aplicação se não estiver autenticado
-    [] - O usuário deve poder cadastrar o curso
-    [] - O usuário deve poder atualizar o curso
+    [x] - Deve ser poder criar usuários
+    [x] - O usuário deve estar autenticado
+    [x] - O usuário não pode acessar a aplicação se não estiver autenticado
+    [x] - O usuário deve poder cadastrar o curso
+    [x] - O usuário deve poder atualizar o curso
 
 ### Courses
 
-    [] - O curso so pode ser cadastrado por um usuário administrador
-    [] - O Admin deve poder listar os **courses**
+    [x] - O curso so pode ser cadastrado por um usuário administrador
+    [x] - O Admin deve poder listar os **courses**
 
 ### Lessons
 

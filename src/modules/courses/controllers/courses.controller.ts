@@ -22,6 +22,7 @@ import { Course } from '../entities/course.entity'
 import { JWtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard'
 import { RoleGuard } from 'src/modules/auth/guards/role-auth.guard'
 import { UpdateCourseDTO } from '../dtos/updateCourse.dto'
+import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 
 @Controller('courses')
 export class CoursesController {
@@ -61,5 +62,15 @@ export class CoursesController {
     const courses = await this.courseService.getAllCourses()
 
     return courses
+  }
+
+  @UseGuards(JWtAuthGuard)
+  @Get(':id/lessons')
+  public async getAllLessonsByCourseId(
+    @Param('id', new ParseUUIDPipe()) id: string
+  ): Promise<Lesson[]> {
+    const lessons = await this.courseService.getAllLessonsByCourseId(id)
+
+    return lessons
   }
 }

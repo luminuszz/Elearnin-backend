@@ -51,13 +51,9 @@ export class UsersService {
   }
 
   public async FindByEmail(email: string): Promise<User | undefined> {
-    const foundUser = await this.adminUserRepository.findOneOrFail({
+    const foundUser = await this.adminUserRepository.findOne({
       where: { email },
     })
-
-    if (!foundUser) {
-      throw new Error('user not Found')
-    }
 
     return foundUser
   }

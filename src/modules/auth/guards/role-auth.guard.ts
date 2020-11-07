@@ -1,15 +1,18 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Observable } from 'rxjs'
-import { User } from 'src/modules/users/entities/user.entity'
-import { Repository } from 'typeorm'
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common'
+import { Reflector } from '@nestjs/core'
 import { PayloadDTO } from '../dtos/payload.interface'
+import { AdminUserService } from 'src/modules/users/services/adminUsers.service'
 
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly usersService: AdminUserService,
+    private readonly reflector: Reflector
   ) {}
 
   public async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -17,8 +20,18 @@ export class RoleGuard implements CanActivate {
       .switchToHttp()
       .getRequest<{ user: PayloadDTO }>().user
 
-    const user = await this.userRepository.findOne(id)
+    const role = this.reflector.get<string>('roles', context.getHandler())
 
-    return user.role === 'admin'
+    if (role !== 'admin' || !role) {
+      return true
+    }
+
+    const user = await this.usersService.findAdminUserById(id)
+
+    if (user && user.role === 'admin') {
+      return true
+    } else {
+      throw new UnauthorizedException('Only admins can access this endpoint')
+    }
   }
 }

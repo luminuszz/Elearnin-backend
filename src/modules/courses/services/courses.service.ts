@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 import { Repository } from 'typeorm'
 import { CreateCourseDTO } from '../dtos/createCourse.dto'
 import { UpdateCourseDTO } from '../dtos/updateCourse.dto'
@@ -46,8 +47,16 @@ export class CoursesService {
   }
 
   public async getAllCourses(): Promise<Course[]> {
-    const courses = await this.courseRepository.find()
+    const courses = await this.courseRepository.find({ relations: ['lessons'] })
 
     return courses
+  }
+
+  public async getAllLessonsByCourseId(id: string): Promise<Lesson[]> {
+    const course = await this.courseRepository.findOne(id, {
+      relations: ['lessons'],
+    })
+
+    return course.lessons
   }
 }

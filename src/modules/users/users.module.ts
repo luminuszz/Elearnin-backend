@@ -10,6 +10,6 @@ import { AdminUserService } from './services/adminUsers.service'
   imports: [TypeOrmModule.forFeature([User])],
   providers: [UsersService, AdminUserService, VerifyEmail],
   controllers: [AdminUsersController, UsersController],
-  exports: [UsersService],
+  exports: [UsersService, AdminUserService],
 })
 export class UserModule {}

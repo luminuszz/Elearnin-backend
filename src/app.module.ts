@@ -6,10 +6,16 @@ import { UserModule } from './modules/users/users.module'
 import { Connection } from 'typeorm'
 import { AuthModule } from './modules/auth/auth.module'
 import { CoursesModule } from './modules/courses/courses.module'
-import { LessonsModule } from './modules/lessons/lessons.module';
+import { LessonsModule } from './modules/lessons/lessons.module'
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UserModule, AuthModule, CoursesModule, LessonsModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    UserModule,
+    AuthModule,
+    CoursesModule,
+    LessonsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

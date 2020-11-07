@@ -1,3 +1,4 @@
+import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 import { User } from 'src/modules/users/entities/user.entity'
 import {
   Entity,
@@ -6,7 +7,7 @@ import {
   ManyToMany,
   UpdateDateColumn,
   CreateDateColumn,
-  JoinTable,
+  OneToMany,
 } from 'typeorm'
 
 @Entity('courses')
@@ -28,6 +29,9 @@ export class Course {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date
+
+  @OneToMany(() => Lesson, lesson => lesson.course)
+  lessons: Lesson[]
 
   @ManyToMany(type => User)
   users: User[]

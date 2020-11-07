@@ -39,4 +39,10 @@ export class AdminUserService {
 
     return newAdminUser
   }
+
+  public async findAdminUserById(id: string): Promise<User> {
+    const admin = await this.usersRepository.findOne(id)
+
+    return admin
+  }
 }
