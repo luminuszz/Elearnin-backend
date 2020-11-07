@@ -5,7 +5,7 @@
   "username": "fylodgzwnedmul",
   "password": "ee3af53960916d6e249e7a1dde4482b5f1589e3d3c2496fcef8b0d0127af4be6",
   "database": "dd89bd7jqvg3i7",
-  "url": "postgres://fylodgzwnedmul:ee3af53960916d6e249e7a1dde4482b5f1589e3d3c2496fcef8b0d0127af4be6@ec2-50-19-26-235.compute-1.amazonaws.com:5432/dd89bd7jqvg3i7"
+  "url": "postgres://fylodgzwnedmul:ee3af53960916d6e249e7a1dde4482b5f1589e3d3c2496fcef8b0d0127af4be6@ec2-50-19-26-235.compute-1.amazonaws.com:5432/dd89bd7jqvg3i7",
   "migrations": [
     "./dist/database/migrations/*.js"
   ],
