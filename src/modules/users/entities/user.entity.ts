@@ -1,9 +1,9 @@
+import { Exclude } from 'class-transformer'
 import { Course } from 'src/modules/courses/entities/course.entity'
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
@@ -22,6 +22,7 @@ export class User {
   email: string
 
   @Column({ name: 'password_hash' })
+  @Exclude()
   passwordHash: string
 
   @Column()

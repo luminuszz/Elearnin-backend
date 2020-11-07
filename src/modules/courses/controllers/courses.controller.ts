@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Param,
@@ -8,7 +9,6 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
-  UsePipes,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { CoursesService } from '../services/courses.service'
@@ -25,11 +25,13 @@ import { UpdateCourseDTO } from '../dtos/updateCourse.dto'
 import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 
 @Controller('courses')
+@UseGuards(JWtAuthGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 export class CoursesController {
   constructor(private readonly courseService: CoursesService) {}
 
   @Post()
-  @UseGuards(JWtAuthGuard, RoleGuard)
+  @UseGuards(RoleGuard)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -48,7 +50,7 @@ export class CoursesController {
     return newCourse
   }
 
-  @UseGuards(JWtAuthGuard, RoleGuard)
+  @UseGuards(RoleGuard)
   @Post('update')
   public async updateCourse(@Body() data: UpdateCourseDTO): Promise<Course> {
     const updatedCourse = await this.courseService.updateCourse(data)
@@ -56,7 +58,6 @@ export class CoursesController {
     return updatedCourse
   }
 
-  @UseGuards(JWtAuthGuard)
   @Get()
   public async getAllCourses(): Promise<Course[]> {
     const courses = await this.courseService.getAllCourses()
@@ -64,7 +65,6 @@ export class CoursesController {
     return courses
   }
 
-  @UseGuards(JWtAuthGuard)
   @Get(':id/lessons')
   public async getAllLessonsByCourseId(
     @Param('id', new ParseUUIDPipe()) id: string

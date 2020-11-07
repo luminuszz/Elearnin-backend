@@ -14,6 +14,7 @@ export class CreateUserDto {
   password: string
 
   @IsString()
+  @IsNotEmpty()
   city: string
 
   @IsString()

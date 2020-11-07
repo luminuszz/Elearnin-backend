@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { ClassSerializerInterceptor, Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -7,9 +7,16 @@ import { Connection } from 'typeorm'
 import { AuthModule } from './modules/auth/auth.module'
 import { CoursesModule } from './modules/courses/courses.module'
 import { LessonsModule } from './modules/lessons/lessons.module'
+import { ConfigModule } from '@nestjs/config'
+import { ValidationPipe } from './shared/pipes/validationSchema.pipe'
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env.development',
+    }),
     TypeOrmModule.forRoot(),
     UserModule,
     AuthModule,
@@ -17,7 +24,13 @@ import { LessonsModule } from './modules/lessons/lessons.module'
     LessonsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {
   constructor(private connection: Connection) {}

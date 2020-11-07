@@ -1,5 +1,7 @@
+import { Exclude, Expose } from 'class-transformer'
 import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 import { User } from 'src/modules/users/entities/user.entity'
+import { join } from 'path'
 import {
   Entity,
   Column,
@@ -35,4 +37,11 @@ export class Course {
 
   @ManyToMany(type => User)
   users: User[]
+
+  @Expose({ name: 'imagesPath' })
+  get imagePath(): string {
+    const pathImage = join(process.env.STATIC_URL, 'images', this.image)
+
+    return pathImage
+  }
 }

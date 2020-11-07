@@ -18,8 +18,8 @@
 
 ### Lessons
 
-    [] - O admin deve poder cadastrar uma **lesson** dentro de de um **course**
-    [] - O admin dever poder listar as **lessons**
+    [x] - O admin deve poder cadastrar uma **lesson** dentro de de um **course**
+    [x] - O admin dever poder listar as **lessons**
 
 ### Relacionamentos
 

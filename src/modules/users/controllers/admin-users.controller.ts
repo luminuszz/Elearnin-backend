@@ -1,9 +1,11 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Post,
   UseGuards,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common'
 
@@ -15,6 +17,7 @@ import { CreateUserDto } from '../dtos/createUserDto'
 import { VerifyEmail } from '../pipes/verify-email.pipe'
 
 @UseGuards(JWtAuthGuard, RoleGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('adminsUsers')
 export class AdminUsersController {
   constructor(private readonly adminUserService: AdminUserService) {}
