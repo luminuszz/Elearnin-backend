@@ -18,13 +18,15 @@ export class AdminUserService {
 
   public async getAdminUsers(): Promise<User[]> {
     const adminUsers = await this.usersRepository.find({
-      where: { role: 'admin' },
+      where: { role: this.role },
     })
 
     return adminUsers
   }
 
   public async createAdminUser(data: CreateUserDto): Promise<User> {
+    console.log(this.role)
+
     const passwordHash = await bcrypt.hash(data.password, 10)
 
     const newAdminUser = this.usersRepository.create({

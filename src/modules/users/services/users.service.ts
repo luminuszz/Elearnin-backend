@@ -44,6 +44,7 @@ export class UsersService {
   public async getAllUsers(): Promise<User[]> {
     const users = await this.adminUserRepository.find({
       where: { role: this.role },
+      relations: ['courses'],
     })
 
     return users

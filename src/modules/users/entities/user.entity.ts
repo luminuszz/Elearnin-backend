@@ -1,7 +1,11 @@
+import { Course } from 'src/modules/courses/entities/course.entity'
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
@@ -37,4 +41,8 @@ export class User {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date
+
+  @ManyToMany(type => Course)
+  @JoinTable()
+  courses: Course[]
 }
