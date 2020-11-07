@@ -27,7 +27,7 @@ export class User {
   state: string
 
   @Column()
-  role: string
+  role: 'admin' | 'user' | string
 
   @Column({ name: 'zip_code' })
   zipCode: string

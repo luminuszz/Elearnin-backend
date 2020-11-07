@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from '../dtos/createUserDto'
@@ -7,17 +7,20 @@ import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class UsersService {
+  private role: string
+
   constructor(
     @InjectRepository(User)
     private readonly adminUserRepository: Repository<User>
-  ) {}
+  ) {
+    this.role = 'user'
+  }
 
-  public async createAdminUser({
+  public async createUser({
     email,
     name,
     password,
     city,
-    role,
     state,
     zipCode,
   }: CreateUserDto): Promise<User> {
@@ -30,7 +33,7 @@ export class UsersService {
       city,
       state,
       zipCode,
-      role,
+      role: this.role,
     })
 
     await this.adminUserRepository.save(newUser)
@@ -38,10 +41,12 @@ export class UsersService {
     return newUser
   }
 
-  public async getAllAdminUsers(): Promise<User[]> {
-    const admins = await this.adminUserRepository.find()
+  public async getAllUsers(): Promise<User[]> {
+    const users = await this.adminUserRepository.find({
+      where: { role: this.role },
+    })
 
-    return admins
+    return users
   }
 
   public async FindByEmail(email: string): Promise<User | undefined> {

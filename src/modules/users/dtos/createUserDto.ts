@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, Length, Contains } from 'class-validator'
+import { IsString, IsNotEmpty, Length } from 'class-validator'
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -24,7 +24,4 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   zipCode: string
-
-  @Contains('admin' || 'user')
-  role: string
 }
