@@ -1,6 +1,8 @@
 import { Exclude } from 'class-transformer'
 import { Course } from 'src/modules/courses/entities/course.entity'
+import { hash } from 'bcrypt'
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -9,6 +11,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+
+export enum UserRole {
+  admin = 'adminUser',
+  user = 'commonUser',
+}
 
 @Entity('users')
 export class User {
@@ -31,8 +38,12 @@ export class User {
   @Column()
   state: string
 
-  @Column()
-  role: 'admin' | 'user' | string
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.user,
+  })
+  role: UserRole
 
   @Column({ name: 'zip_code' })
   zipCode: string
@@ -46,4 +57,10 @@ export class User {
   @ManyToMany(type => Course)
   @JoinTable()
   courses: Course[]
+
+  @BeforeInsert()
+  private async createPasswordHash() {
+    const hashSAlt = await hash(this.passwordHash, 10)
+    this.passwordHash = hashSAlt
+  }
 }

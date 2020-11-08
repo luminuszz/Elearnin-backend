@@ -1,4 +1,4 @@
-import { User } from 'src/modules/users/entities/user.entity'
+import { User, UserRole } from 'src/modules/users/entities/user.entity'
 import { MigrationInterface, QueryRunner } from 'typeorm'
 import { hash } from 'bcrypt'
 
@@ -14,7 +14,7 @@ export class PopulateAdmins1604797403945 implements MigrationInterface {
       email: 'adminTeste@gmail.com',
       passwordHash,
       zipCode: '544545',
-      role: 'admin',
+      role: UserRole.admin,
     })
 
     await userRepository.save(AdminSeed)

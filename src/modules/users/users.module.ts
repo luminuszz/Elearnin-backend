@@ -6,9 +6,18 @@ import { AdminUsersController } from './controllers/admin-users.controller'
 import { VerifyEmail } from './pipes/verify-email.pipe'
 import { UsersController } from './controllers/users.controller'
 import { AdminUserService } from './services/adminUsers.service'
+import { APP_GUARD } from '@nestjs/core'
+import { RoleGuard } from '../auth/guards/role-auth.guard'
+import { JWtAuthGuard } from '../auth/guards/jwt-auth.guard'
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  providers: [UsersService, AdminUserService, VerifyEmail],
+  providers: [
+    UsersService,
+    AdminUserService,
+    VerifyEmail,
+    { provide: APP_GUARD, useClass: JWtAuthGuard },
+    { provide: APP_GUARD, useClass: RoleGuard },
+  ],
   controllers: [AdminUsersController, UsersController],
   exports: [UsersService, AdminUserService],
 })

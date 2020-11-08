@@ -9,7 +9,7 @@ import { CoursesModule } from './modules/courses/courses.module'
 import { LessonsModule } from './modules/lessons/lessons.module'
 import { ConfigModule } from '@nestjs/config'
 import { ValidationPipe } from './shared/pipes/validationSchema.pipe'
-import { APP_PIPE } from '@nestjs/core'
+import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 
 @Module({
   imports: [
@@ -29,6 +29,10 @@ import { APP_PIPE } from '@nestjs/core'
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
     },
   ],
 })

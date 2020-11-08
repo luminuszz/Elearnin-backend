@@ -19,3 +19,16 @@ export const imageFileFilter = (req, file, callback) => {
   }
   callback(null, true)
 }
+
+export const StorageService = (
+  req: Request,
+  file: Express.Multer.File,
+  callback: (error: Error | null, destination: string) => void
+) => {
+  switch (process.env.STATE) {
+    case 'development':
+      return './temp/images'
+  }
+
+  return callback(null, String(true))
+}

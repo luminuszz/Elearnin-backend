@@ -2,19 +2,15 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from '../dtos/createUserDto'
-import { User } from '../entities/user.entity'
-import * as bcrypt from 'bcrypt'
+import { User, UserRole } from '../entities/user.entity'
+// import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class UsersService {
-  private role: string
-
   constructor(
     @InjectRepository(User)
     private readonly adminUserRepository: Repository<User>
-  ) {
-    this.role = 'user'
-  }
+  ) {}
 
   public async createUser({
     email,
@@ -24,16 +20,14 @@ export class UsersService {
     state,
     zipCode,
   }: CreateUserDto): Promise<User> {
-    const passwordHash = await bcrypt.hash(password, 12)
-
     const newUser = this.adminUserRepository.create({
       email,
       name,
-      passwordHash,
+      passwordHash: password,
       city,
       state,
       zipCode,
-      role: this.role,
+      role: UserRole.user,
     })
 
     await this.adminUserRepository.save(newUser)
@@ -43,7 +37,7 @@ export class UsersService {
 
   public async getAllUsers(): Promise<User[]> {
     const users = await this.adminUserRepository.find({
-      where: { role: this.role },
+      where: { role: UserRole.user },
       relations: ['courses'],
     })
 

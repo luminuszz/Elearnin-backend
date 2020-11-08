@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from '../dtos/createUserDto'
-import { User } from '../entities/user.entity'
-import * as bcrypt from 'bcrypt'
+import { User, UserRole } from '../entities/user.entity'
+// import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class AdminUserService {
@@ -27,12 +27,12 @@ export class AdminUserService {
   public async createAdminUser(data: CreateUserDto): Promise<User> {
     console.log(this.role)
 
-    const passwordHash = await bcrypt.hash(data.password, 10)
+    //  const passwordHash = await bcrypt.hash(data.password, 10)
 
     const newAdminUser = this.usersRepository.create({
       ...data,
-      passwordHash,
-      role: this.role,
+      passwordHash: data.password,
+      role: UserRole.admin,
     })
 
     await this.usersRepository.save(newAdminUser)
@@ -41,7 +41,9 @@ export class AdminUserService {
   }
 
   public async findAdminUserById(id: string): Promise<User> {
-    const admin = await this.usersRepository.findOne(id)
+    const admin = await this.usersRepository.findOne(id, {
+      where: { role: UserRole.admin },
+    })
 
     return admin
   }
