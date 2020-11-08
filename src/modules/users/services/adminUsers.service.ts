@@ -25,8 +25,6 @@ export class AdminUserService {
   }
 
   public async createAdminUser(data: CreateUserDto): Promise<User> {
-    console.log(this.role)
-
     //  const passwordHash = await bcrypt.hash(data.password, 10)
 
     const newAdminUser = this.usersRepository.create({

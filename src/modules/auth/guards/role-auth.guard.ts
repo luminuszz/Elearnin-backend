@@ -29,8 +29,6 @@ export class RoleGuard implements CanActivate {
 
     const verifyUserAdmin = await this.usersService.findAdminUserById(id)
 
-    console.log(verifyUserAdmin)
-
     if (!verifyUserAdmin) {
       throw new UnauthorizedException('Only admins can access this endpoint')
     }

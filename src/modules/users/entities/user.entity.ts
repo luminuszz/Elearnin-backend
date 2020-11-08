@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import TransformerEncrypt from 'src/database/utils/TransformHashInstace'
 
 export enum UserRole {
   admin = 'adminUser',
@@ -22,20 +23,20 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
+  @Column({ transformer: TransformerEncrypt })
   name: string
 
-  @Column()
+  @Column({ transformer: TransformerEncrypt })
   email: string
 
   @Column({ name: 'password_hash' })
-  @Exclude()
+  // @Exclude()
   passwordHash: string
 
-  @Column()
+  @Column({ transformer: TransformerEncrypt })
   city: string
 
-  @Column()
+  @Column({ transformer: TransformerEncrypt })
   state: string
 
   @Column({
@@ -45,7 +46,7 @@ export class User {
   })
   role: UserRole
 
-  @Column({ name: 'zip_code' })
+  @Column({ name: 'zip_code', transformer: TransformerEncrypt })
   zipCode: string
 
   @CreateDateColumn({ name: 'created_at' })

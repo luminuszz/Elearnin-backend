@@ -15,7 +15,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       email,
       password,
     })
-    console.log(validateUser)
 
     if (!validateUser) {
       throw new UnauthorizedException('credentials incorrect')

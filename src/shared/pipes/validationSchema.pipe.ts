@@ -18,7 +18,6 @@ export class ValidationPipe implements PipeTransform<any> {
     const errors = await validate(object)
 
     const formattedErrors = this.serializeErrors(errors)
-    console.log(formattedErrors)
 
     if (errors.length > 0) {
       throw new BadRequestException(formattedErrors)
