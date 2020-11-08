@@ -5,7 +5,7 @@ export class CreateUsersCoursesCoureses1604874325104
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users_courses_courses',
+        name: 'courses_users_users',
         columns: [
           { name: 'usersId', type: 'uuid' },
           { name: 'coursesId', type: 'uuid' },
