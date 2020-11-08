@@ -7,26 +7,20 @@ import { User, UserRole } from '../entities/user.entity'
 
 @Injectable()
 export class AdminUserService {
-  private role: string
-
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>
-  ) {
-    this.role = 'admin'
-  }
+  ) {}
 
   public async getAdminUsers(): Promise<User[]> {
     const adminUsers = await this.usersRepository.find({
-      where: { role: this.role },
+      where: { role: UserRole.admin },
     })
 
     return adminUsers
   }
 
   public async createAdminUser(data: CreateUserDto): Promise<User> {
-    //  const passwordHash = await bcrypt.hash(data.password, 10)
-
     const newAdminUser = this.usersRepository.create({
       ...data,
       passwordHash: data.password,

@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   OneToMany,
+  JoinTable,
 } from 'typeorm'
 
 @Entity('courses')
@@ -35,13 +36,13 @@ export class Course {
   @OneToMany(() => Lesson, lesson => lesson.course)
   lessons: Lesson[]
 
-  @ManyToMany(type => User)
+  @ManyToMany(type => User, user => user.courses, { cascade: true })
+  @JoinTable()
   users: User[]
 
   @Expose({ name: 'imagesPath' })
   get imagePath(): string {
     const pathImage = join(process.env.STATIC_URL, 'images', this.image)
-
     return pathImage
   }
 }

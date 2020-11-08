@@ -8,7 +8,7 @@
     "nest": "./node_modules/@nestjs/cli/bin/nest.js",
     "typeorm": "ts-node-dev  ./node_modules/typeorm/cli.js",
     "prebuild": "rimraf dist",
-    "build": "nest build && typeorm schema:drop && typeorm migration:run",
+    "build": "nest build && typeorm migration:run",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main",
     "dev": "nest start --watch",

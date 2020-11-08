@@ -1,16 +1,20 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
 import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
-import { Repository } from 'typeorm'
 import { CreateCourseDTO } from '../dtos/createCourse.dto'
 import { UpdateCourseDTO } from '../dtos/updateCourse.dto'
 import { Course } from '../entities/course.entity'
+import { SubscriberCourseDTO } from '../dtos/subscriberCourse.dto'
+import { CourseRepository } from '../repositories/course.repository'
+import { InjectRepository } from '@nestjs/typeorm'
+import { User } from 'src/modules/users/entities/user.entity'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class CoursesService {
   constructor(
-    @InjectRepository(Course)
-    private readonly courseRepository: Repository<Course>
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+    private readonly courseRepository: CourseRepository
   ) {}
 
   public async createCourse(
@@ -47,7 +51,9 @@ export class CoursesService {
   }
 
   public async getAllCourses(): Promise<Course[]> {
-    const courses = await this.courseRepository.find({ relations: ['lessons'] })
+    const courses = await this.courseRepository.find({
+      relations: ['lessons', 'users'],
+    })
 
     return courses
   }
@@ -58,5 +64,20 @@ export class CoursesService {
     })
 
     return course.lessons
+  }
+
+  public async subscriberCourse({
+    courseId,
+    userId,
+  }: SubscriberCourseDTO): Promise<Course> {
+    const currentCourse = await this.courseRepository.findOne(courseId)
+
+    const currentUser = await this.userRepository.findOne(userId)
+
+    currentCourse.users = [currentUser]
+
+    await this.courseRepository.save(currentCourse)
+
+    return currentCourse
   }
 }
