@@ -82,4 +82,14 @@ export class CoursesController {
     const result = await this.courseService.subscriberCourse(data)
     return result
   }
+
+  @AuthDeclaration('jwt')
+  @UseGuards(MatchUuid)
+  @Post('unsubscribe')
+  public async unSubscribeToCourse(
+    @Body() data: SubscriberCourseDTO
+  ): Promise<Course> {
+    const result = await this.courseService.unSubscribeCourse(data)
+    return result
+  }
 }

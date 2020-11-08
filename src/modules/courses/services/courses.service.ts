@@ -80,4 +80,19 @@ export class CoursesService {
 
     return currentCourse
   }
+
+  public async unSubscribeCourse({
+    courseId,
+    userId,
+  }: SubscriberCourseDTO): Promise<Course> {
+    const currentCourse = await this.courseRepository.findOne(courseId, {
+      relations: ['users'],
+    })
+
+    currentCourse.users = currentCourse.users.filter(user => user.id !== userId)
+
+    await this.courseRepository.save(currentCourse)
+
+    return currentCourse
+  }
 }
