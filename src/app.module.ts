@@ -9,13 +9,13 @@ import { CoursesModule } from './modules/courses/courses.module'
 import { LessonsModule } from './modules/lessons/lessons.module'
 import { ConfigModule } from '@nestjs/config'
 import { ValidationPipe } from './shared/pipes/validationSchema.pipe'
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
+import { APP_PIPE } from '@nestjs/core'
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.development',
+      envFilePath: '.env',
     }),
     TypeOrmModule.forRoot(),
     UserModule,
