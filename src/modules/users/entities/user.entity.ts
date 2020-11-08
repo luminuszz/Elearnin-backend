@@ -55,8 +55,7 @@ export class User {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date
 
-  @ManyToMany(type => Course)
-  @JoinTable()
+  @ManyToMany(type => Course, course => course.users)
   courses: Course[]
 
   @BeforeInsert()

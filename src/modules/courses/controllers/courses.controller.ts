@@ -6,6 +6,7 @@ import {
   ParseUUIDPipe,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
@@ -20,6 +21,8 @@ import { Course } from '../entities/course.entity'
 import { UpdateCourseDTO } from '../dtos/updateCourse.dto'
 import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 import { AuthDeclaration } from 'src/modules/auth/decorators/authDeclaration.decorator'
+import { SubscriberCourseDTO } from '../dtos/subscriberCourse.dto'
+import { MatchUuid } from '../guards/matchId.guard'
 
 @Controller('courses')
 export class CoursesController {
@@ -68,5 +71,15 @@ export class CoursesController {
     const lessons = await this.courseService.getAllLessonsByCourseId(id)
 
     return lessons
+  }
+
+  @AuthDeclaration('jwt')
+  @UseGuards(MatchUuid)
+  @Post('subscribe')
+  public async subscribeToCourse(
+    @Body() data: SubscriberCourseDTO
+  ): Promise<Course> {
+    const result = await this.courseService.subscriberCourse(data)
+    return result
   }
 }
