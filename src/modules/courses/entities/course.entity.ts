@@ -1,23 +1,12 @@
-import { Exclude, Expose } from 'class-transformer'
+import { Expose } from 'class-transformer'
 import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 import { User } from 'src/modules/users/entities/user.entity'
 import { join } from 'path'
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  ManyToMany,
-  UpdateDateColumn,
-  CreateDateColumn,
-  OneToMany,
-  JoinTable,
-} from 'typeorm'
+import { Entity, Column, ManyToMany, OneToMany, JoinTable } from 'typeorm'
+import { BaseEntity } from '../../../shared/entities/base.entity'
 
 @Entity('courses')
-export class Course {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class Course extends BaseEntity {
   @Column({ nullable: false })
   name: string
 
@@ -26,12 +15,6 @@ export class Course {
 
   @Column({ nullable: true })
   image?: string
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date
 
   @OneToMany(() => Lesson, lesson => lesson.course)
   lessons: Lesson[]

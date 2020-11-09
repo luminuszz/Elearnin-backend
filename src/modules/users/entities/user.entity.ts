@@ -1,16 +1,8 @@
 import { Exclude } from 'class-transformer'
 import { Course } from 'src/modules/courses/entities/course.entity'
 import { hash } from 'bcrypt'
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm'
+import { BeforeInsert, Column, Entity, ManyToMany } from 'typeorm'
+import { BaseEntity } from '../../../shared/entities/base.entity'
 import TransformerEncrypt from 'src/database/utils/TransformHashInstace'
 
 export enum UserRole {
@@ -19,10 +11,7 @@ export enum UserRole {
 }
 
 @Entity('users')
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class User extends BaseEntity {
   @Column({ transformer: TransformerEncrypt })
   name: string
 
@@ -30,7 +19,7 @@ export class User {
   email: string
 
   @Column({ name: 'password_hash' })
-  // @Exclude()
+  @Exclude()
   passwordHash: string
 
   @Column({ transformer: TransformerEncrypt })
@@ -48,12 +37,6 @@ export class User {
 
   @Column({ name: 'zip_code', transformer: TransformerEncrypt })
   zipCode: string
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date
 
   @ManyToMany(type => Course, course => course.users)
   courses: Course[]

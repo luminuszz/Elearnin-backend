@@ -1,20 +1,10 @@
 import { Course } from 'src/modules/courses/entities/course.entity'
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Repository,
-  UpdateDateColumn,
-} from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
+
+import { BaseEntity } from '../../../shared/entities/base.entity'
 
 @Entity('lessons')
-export class Lesson {
-  @PrimaryGeneratedColumn('uuid')
-  id: string
-
+export class Lesson extends BaseEntity {
   @Column()
   name: string
 
@@ -29,12 +19,6 @@ export class Lesson {
 
   @Column({ name: 'course_id' })
   courseId: string
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date
 
   @ManyToOne(() => Course)
   @JoinColumn({ name: 'course_id' })
