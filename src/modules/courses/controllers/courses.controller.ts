@@ -11,11 +11,7 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { CoursesService } from '../services/courses.service'
-import { diskStorage } from 'multer'
-import {
-  editFileName,
-  imageFileFilter,
-} from 'src/shared/utils/fileFormatet.utils'
+import { fileResolver } from 'src/shared/utils/fileFormatet.utils'
 import { CreateCourseDTO } from '../dtos/createCourse.dto'
 import { Course } from '../entities/course.entity'
 import { UpdateCourseDTO } from '../dtos/updateCourse.dto'
@@ -23,26 +19,19 @@ import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 import { AuthDeclaration } from 'src/modules/auth/decorators/authDeclaration.decorator'
 import { SubscriberCourseDTO } from '../dtos/subscriberCourse.dto'
 import { MatchUuid } from '../guards/matchId.guard'
+import { UploadService } from 'src/shared/providers/upload/upload.service'
 
 @Controller('courses')
 export class CoursesController {
   constructor(private readonly courseService: CoursesService) {}
 
   @Post()
-  @AuthDeclaration('jwt', 'admin')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './temp/images',
-        filename: editFileName,
-      }),
-      fileFilter: imageFileFilter,
-    })
-  )
+  //  @AuthDeclaration('jwt', 'admin')
+  @UseInterceptors(FileInterceptor('file', fileResolver))
   public async createCourse(
     @UploadedFile() file: Express.Multer.File,
     @Body() data: CreateCourseDTO
-  ): Promise<Course> {
+  ): Promise<any> {
     const newCourse = await this.courseService.createCourse(data, file.filename)
 
     return newCourse
@@ -66,7 +55,7 @@ export class CoursesController {
   @AuthDeclaration('jwt', 'user')
   @Get(':id/lessons')
   public async getAllLessonsByCourseId(
-    @Param('id', new ParseUUIDPipe()) id: string
+    @Param('id', ParseUUIDPipe) id: string
   ): Promise<Lesson[]> {
     const lessons = await this.courseService.getAllLessonsByCourseId(id)
 

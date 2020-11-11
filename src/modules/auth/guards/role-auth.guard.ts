@@ -19,7 +19,7 @@ export class RoleGuard implements CanActivate {
   public async canActivate(context: ExecutionContext): Promise<boolean> {
     const role = this.reflector.get<string>('roles', context.getHandler())
 
-    if (!role || UserRole[role] !== 'admin') {
+    if (!role || UserRole[role] !== 'adminUser') {
       return true
     }
 

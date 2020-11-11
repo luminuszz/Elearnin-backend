@@ -3,10 +3,11 @@ import { UserRole } from 'src/modules/users/entities/user.entity'
 import { AuthType, JWtAuthGuard } from '../guards/jwt-auth.guard'
 import { RoleGuard } from '../guards/role-auth.guard'
 
-export function AuthDeclaration(
+export const AuthDeclaration = (
   authType?: keyof typeof AuthType,
   roleType?: keyof typeof UserRole
-): any {
+): any => {
+  console.log(authType, roleType)
   return applyDecorators(
     SetMetadata('auth', authType),
     UseGuards(JWtAuthGuard),

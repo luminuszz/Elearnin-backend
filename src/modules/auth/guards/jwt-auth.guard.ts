@@ -22,6 +22,8 @@ export class JWtAuthGuard extends AuthGuard('jwt') {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const authType = this.reflector.get<string>('auth', context.getHandler())
 
+    console.log(authType)
+
     if (!AuthType[authType]) {
       return true
     }

@@ -50,4 +50,10 @@ export class UsersService {
 
     return foundUser
   }
+
+  public async findById(id: string): Promise<User | undefined> {
+    const foundUser = await this.adminUserRepository.findOne(id)
+
+    return foundUser
+  }
 }

@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common'
-import { Auth } from 'src/modules/auth/decorators/authType.decorator'
-import { Roles } from 'src/modules/auth/decorators/role.decorator'
+import { Body, Controller, Get, Post } from '@nestjs/common'
+import { AuthDeclaration } from 'src/modules/auth/decorators/authDeclaration.decorator'
 import { CreateUserDto } from '../dtos/createUserDto'
 import { User } from '../entities/user.entity'
 import { VerifyEmail } from '../pipes/verify-email.pipe'
@@ -11,16 +10,16 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @UsePipes(VerifyEmail)
-  public async createUser(@Body() data: CreateUserDto): Promise<User> {
+  public async createUser(
+    @Body(VerifyEmail) data: CreateUserDto
+  ): Promise<User> {
     const newUser = await this.usersService.createUser(data)
 
     return newUser
   }
 
+  @AuthDeclaration('jwt', 'admin')
   @Get()
-  @Auth('jwt')
-  @Roles('admin')
   public async getAllUsers(): Promise<User[]> {
     const users = await this.usersService.getAllUsers()
 

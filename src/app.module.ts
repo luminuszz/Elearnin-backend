@@ -10,13 +10,10 @@ import { LessonsModule } from './modules/lessons/lessons.module'
 import { ConfigModule } from '@nestjs/config'
 import { ValidationPipe } from './shared/pipes/validationSchema.pipe'
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
+import envVar from './config/envVariables'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
     TypeOrmModule.forRoot(),
     UserModule,
     AuthModule,

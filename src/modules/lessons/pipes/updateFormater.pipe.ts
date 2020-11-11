@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common'
+import {
+  ArgumentMetadata,
+  BadRequestException,
+  Injectable,
+  PipeTransform,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { UpdateLessonDTO } from '../dtos/updateLesson.dto'
 import { LessonsService } from '../services/lessons.service'
 

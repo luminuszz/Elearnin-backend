@@ -7,10 +7,15 @@ import { UserModule } from '../users/users.module'
 import { CoursesController } from './controllers/courses.controller'
 import { CoursesService } from './services/courses.service'
 import { CourseRepository } from './repositories/course.repository'
-import { User } from '../users/entities/user.entity'
+import { UploadModule } from 'src/shared/providers/upload/upload.module'
+import { CourseCategory } from './entities/courseCategory.entity'
 
 @Module({
-  imports: [UserModule, TypeOrmModule.forFeature([CourseRepository, User])],
+  imports: [
+    UserModule,
+    UploadModule,
+    TypeOrmModule.forFeature([CourseRepository, CourseCategory]),
+  ],
   controllers: [CoursesController],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },

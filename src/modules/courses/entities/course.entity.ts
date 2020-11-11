@@ -4,6 +4,7 @@ import { User } from 'src/modules/users/entities/user.entity'
 import { join } from 'path'
 import { Entity, Column, ManyToMany, OneToMany, JoinTable } from 'typeorm'
 import { BaseEntity } from '../../../shared/entities/base.entity'
+import { CourseCategory } from './courseCategory.entity'
 
 @Entity('courses')
 export class Course extends BaseEntity {
@@ -19,13 +20,18 @@ export class Course extends BaseEntity {
   @OneToMany(() => Lesson, lesson => lesson.course)
   lessons: Lesson[]
 
-  @ManyToMany(type => User, user => user.courses, { cascade: true })
+  @ManyToMany(() => User, user => user.courses)
   @JoinTable()
   users: User[]
 
+  @OneToMany(() => CourseCategory, courseCategory => courseCategory.courses)
+  courseCategory: CourseCategory
+
   @Expose({ name: 'imagesPath' })
   get imagePath(): string {
-    const pathImage = join(process.env.STATIC_URL, 'images', this.image)
-    return pathImage
+    if (this.image) {
+      const pathImage = join(process.env.STATIC_URL, 'images', this.image)
+      return pathImage
+    }
   }
 }

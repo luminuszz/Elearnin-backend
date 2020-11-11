@@ -1,6 +1,7 @@
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from '../entities/user.entity'
 import {
+  ArgumentMetadata,
   Injectable,
   PipeTransform,
   UnauthorizedException,
@@ -15,10 +16,15 @@ export class VerifyEmail implements PipeTransform {
     private readonly adminUserRepository: Repository<User>
   ) {}
 
-  public async transform(value: CreateUserDto): Promise<CreateUserDto> {
+  public async transform(
+    value: CreateUserDto,
+    metadata: ArgumentMetadata
+  ): Promise<CreateUserDto> {
     const result = await this.adminUserRepository.findOne({
       where: { email: value.email },
     })
+
+    console.log(metadata)
 
     if (result) {
       throw new UnauthorizedException('this user already exists')
