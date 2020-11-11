@@ -7,13 +7,15 @@ import { SubscriberCourseDTO } from '../dtos/subscriberCourse.dto'
 import { CourseRepository } from '../repositories/course.repository'
 import { UsersService } from 'src/modules/users/services/users.service'
 import { UploadService } from 'src/shared/providers/upload/upload.service'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { CourseCategory } from '../entities/courseCategory.entity'
 
 @Injectable()
 export class CoursesService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly courseRepository: CourseRepository,
-    private readonly uploadService: UploadService
+    private readonly courseRepository: CourseRepository
   ) {}
 
   public async createCourse(
@@ -25,9 +27,7 @@ export class CoursesService {
       name,
       image: courseImage,
     })
-    if (courseImage) {
-      await this.uploadService.saveFile(courseImage)
-    }
+
     await this.courseRepository.save(newCourse)
 
     return newCourse
@@ -53,7 +53,7 @@ export class CoursesService {
 
   public async getAllCourses(): Promise<Course[]> {
     const courses = await this.courseRepository.find({
-      relations: ['lessons'],
+      relations: ['lessons', 'users', 'courseCategory'],
     })
 
     return courses
@@ -61,7 +61,7 @@ export class CoursesService {
 
   public async getAllLessonsByCourseId(id: string): Promise<Lesson[]> {
     const course = await this.courseRepository.findOne(id, {
-      relations: ['lessons', 'users', 'course_category'],
+      relations: ['lessons', 'users'],
     })
 
     return course.lessons

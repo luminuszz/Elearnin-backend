@@ -2,7 +2,16 @@ import { Expose } from 'class-transformer'
 import { Lesson } from 'src/modules/lessons/entities/lesson.entity'
 import { User } from 'src/modules/users/entities/user.entity'
 import { join } from 'path'
-import { Entity, Column, ManyToMany, OneToMany, JoinTable } from 'typeorm'
+import {
+  Entity,
+  Column,
+  ManyToMany,
+  OneToMany,
+  JoinTable,
+  JoinColumn,
+  OneToOne,
+  ManyToOne,
+} from 'typeorm'
 import { BaseEntity } from '../../../shared/entities/base.entity'
 import { CourseCategory } from './courseCategory.entity'
 
@@ -24,7 +33,8 @@ export class Course extends BaseEntity {
   @JoinTable()
   users: User[]
 
-  @OneToMany(() => CourseCategory, courseCategory => courseCategory.courses)
+  @ManyToOne(() => CourseCategory, courseCategory => courseCategory.courses)
+  @JoinColumn()
   courseCategory: CourseCategory
 
   @Expose({ name: 'imagesPath' })

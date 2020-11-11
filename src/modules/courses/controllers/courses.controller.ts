@@ -23,20 +23,31 @@ import { UploadService } from 'src/shared/providers/upload/upload.service'
 
 @Controller('courses')
 export class CoursesController {
-  constructor(private readonly courseService: CoursesService) {}
+  constructor(
+    private readonly courseService: CoursesService,
+    private readonly uploadService: UploadService
+  ) {}
 
   @Post()
-  //  @AuthDeclaration('jwt', 'admin')
+  @AuthDeclaration('jwt', 'admin')
   @UseInterceptors(FileInterceptor('file', fileResolver))
   public async createCourse(
     @UploadedFile() file: Express.Multer.File,
     @Body() data: CreateCourseDTO
-  ): Promise<any> {
-    const newCourse = await this.courseService.createCourse(data, file.filename)
+  ): Promise<Course> {
+    const newCourse = await this.courseService.createCourse(
+      data,
+      file ? file.filename : ''
+    )
+
+    if (file) {
+      await this.uploadService.saveFile(file.filename)
+    }
 
     return newCourse
   }
 
+  @Post('update')
   @AuthDeclaration('jwt', 'admin')
   public async updateCourse(@Body() data: UpdateCourseDTO): Promise<Course> {
     const updatedCourse = await this.courseService.updateCourse(data)

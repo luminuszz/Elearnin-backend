@@ -2,8 +2,8 @@ import { Course } from '../entities/course.entity'
 import { EntityRepository, Repository } from 'typeorm'
 import { Injectable } from '@nestjs/common'
 
-@EntityRepository(Course)
 @Injectable()
+@EntityRepository(Course)
 export class CourseRepository extends Repository<Course> {
   public async createAndSave<T>(data: T): Promise<Course> {
     const newData = this.create(data)
