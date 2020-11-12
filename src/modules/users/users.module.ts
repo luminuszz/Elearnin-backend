@@ -9,9 +9,10 @@ import { AdminUserService } from './services/adminUsers.service'
 import { APP_GUARD } from '@nestjs/core'
 import { RoleGuard } from '../auth/guards/role-auth.guard'
 import { JWtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { HashModuleProvider } from 'src/shared/providers/hash/hash.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [TypeOrmModule.forFeature([User]), HashModuleProvider],
   providers: [
     AdminUserService,
     VerifyEmail,

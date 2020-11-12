@@ -9,12 +9,24 @@ import { CoursesModule } from './modules/courses/courses.module'
 import { LessonsModule } from './modules/lessons/lessons.module'
 import { ConfigModule } from '@nestjs/config'
 import { ValidationPipe } from './shared/pipes/validationSchema.pipe'
+import { GraphQLModule } from '@nestjs/graphql'
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import envVar from './config/envVariables'
+import envVariables from './config/envVariables'
+import { join } from 'path'
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+      load: [envVariables],
+    }),
     TypeOrmModule.forRoot(),
+    /*    GraphQLModule.forRoot({
+      include: [CoursesModule],
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }), */
+
     UserModule,
     AuthModule,
     CoursesModule,

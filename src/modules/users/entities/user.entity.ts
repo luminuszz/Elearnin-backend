@@ -1,9 +1,13 @@
 import { Exclude } from 'class-transformer'
 import { Course } from 'src/modules/courses/entities/course.entity'
-import { hash } from 'bcrypt'
 import { BeforeInsert, Column, Entity, ManyToMany } from 'typeorm'
 import { BaseEntity } from '../../../shared/entities/base.entity'
-import TransformerEncrypt from 'src/database/utils/TransformHashInstace'
+import encrypted from 'src/database/utils/TransformHashInstace'
+import { Inject } from '@nestjs/common'
+import {
+  HashService,
+  HashToken,
+} from '../../../shared/providers/hash/hash.service'
 
 export enum UserRole {
   admin = 'adminUser',
@@ -12,20 +16,23 @@ export enum UserRole {
 
 @Entity('users')
 export class User extends BaseEntity {
-  @Column({ transformer: TransformerEncrypt })
+  @Inject(HashToken.hashService)
+  private readonly hashService: HashService
+
+  @Column({ transformer: encrypted })
   name: string
 
-  @Column({ transformer: TransformerEncrypt })
+  @Column({ transformer: encrypted })
   email: string
 
   @Column({ name: 'password_hash' })
   @Exclude()
   passwordHash: string
 
-  @Column({ transformer: TransformerEncrypt })
+  @Column({ transformer: encrypted })
   city: string
 
-  @Column({ transformer: TransformerEncrypt })
+  @Column({ transformer: encrypted })
   state: string
 
   @Column({
@@ -35,15 +42,15 @@ export class User extends BaseEntity {
   })
   role: UserRole
 
-  @Column({ name: 'zip_code', transformer: TransformerEncrypt })
+  @Column({ name: 'zip_code', transformer: encrypted })
   zipCode: string
 
-  @ManyToMany(type => Course, course => course.users)
+  @ManyToMany(() => Course, course => course.users)
   courses: Course[]
 
   @BeforeInsert()
   private async createPasswordHash() {
-    const hashSAlt = await hash(this.passwordHash, 10)
+    const hashSAlt = await this.hashService.createHash(this.passwordHash)
     this.passwordHash = hashSAlt
   }
 }
