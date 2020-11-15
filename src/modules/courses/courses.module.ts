@@ -9,6 +9,7 @@ import { CoursesService } from './services/courses.service'
 import { CourseRepository } from './repositories/course.repository'
 import { UploadModule } from 'src/shared/providers/upload/upload.module'
 import { CourseCategory } from './entities/courseCategory.entity'
+import { CourseResolver } from './resolvers/coruse.resolver'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CourseCategory } from './entities/courseCategory.entity'
     { provide: APP_GUARD, useClass: JWtAuthGuard },
     { provide: APP_GUARD, useClass: RoleGuard },
     CoursesService,
+    CourseResolver,
   ],
 })
 export class CoursesModule {}

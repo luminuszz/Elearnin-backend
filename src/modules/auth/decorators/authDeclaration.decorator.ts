@@ -7,7 +7,6 @@ export const AuthDeclaration = (
   authType?: keyof typeof AuthType,
   roleType?: keyof typeof UserRole
 ): any => {
-  console.log(authType, roleType)
   return applyDecorators(
     SetMetadata('auth', authType),
     UseGuards(JWtAuthGuard),

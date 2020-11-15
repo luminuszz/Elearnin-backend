@@ -1,8 +1,6 @@
 import { EncryptionTransformer } from 'typeorm-encrypted'
 import envVariables from '../../config/envVariables'
 
-console.log(envVariables().nodeEnv)
-
 export class TransformEncrypt {
   public static getEncrypt(): EncryptionTransformer {
     const instance = new EncryptionTransformer({

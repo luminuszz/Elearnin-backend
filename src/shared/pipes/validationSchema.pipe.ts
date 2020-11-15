@@ -9,8 +9,11 @@ import { validate, ValidationError } from 'class-validator'
 import { plainToClass } from 'class-transformer'
 
 @Injectable()
-export class ValidationPipe implements PipeTransform<any> {
-  async transform(value: any, { metatype }: ArgumentMetadata): Promise<any> {
+export class ValidationPipe implements PipeTransform {
+  async transform(
+    value: unknown,
+    { metatype }: ArgumentMetadata
+  ): Promise<unknown> {
     if (!metatype || !this.toValidate(metatype)) {
       return value
     }

@@ -9,21 +9,25 @@ import {
   OneToMany,
   JoinTable,
   JoinColumn,
-  OneToOne,
   ManyToOne,
 } from 'typeorm'
 import { BaseEntity } from '../../../shared/entities/base.entity'
 import { CourseCategory } from './courseCategory.entity'
+import { Field, ObjectType } from '@nestjs/graphql'
 
 @Entity('courses')
+@ObjectType()
 export class Course extends BaseEntity {
   @Column({ nullable: false })
+  @Field()
   name: string
 
   @Column({ nullable: false })
+  @Field()
   description: string
 
   @Column({ nullable: true })
+  @Field()
   image?: string
 
   @OneToMany(() => Lesson, lesson => lesson.course)
@@ -33,6 +37,7 @@ export class Course extends BaseEntity {
   @JoinTable()
   users: User[]
 
+  @Field(() => CourseCategory, { nullable: true })
   @ManyToOne(() => CourseCategory, courseCategory => courseCategory.courses)
   @JoinColumn()
   courseCategory: CourseCategory

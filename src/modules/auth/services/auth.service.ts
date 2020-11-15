@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { UsersService } from 'src/modules/users/services/users.service'
 import { ValidateUserDTo } from '../dtos/ValidateUserDTO'
 import * as bcrypt from 'bcrypt'
@@ -37,6 +37,24 @@ export class AuthService {
     const token = await this.jwtService.signAsync(payload)
 
     return {
+      token,
+    }
+  }
+
+  public async ValidateUserToken({
+    email,
+    password,
+  }: ValidateUserDTo): Promise<{ token: string; user: User }> {
+    const user = await this.validateUser({ email, password })
+
+    if (!user) {
+      throw new UnauthorizedException('credenciais incorrect')
+    }
+
+    const { token } = await this.login(user)
+
+    return {
+      user,
       token,
     }
   }

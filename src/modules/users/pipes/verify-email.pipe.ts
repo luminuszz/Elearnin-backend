@@ -1,5 +1,3 @@
-import { InjectRepository } from '@nestjs/typeorm'
-import { User } from '../entities/user.entity'
 import {
   ArgumentMetadata,
   Injectable,
@@ -7,24 +5,17 @@ import {
   UnauthorizedException,
 } from '@nestjs/common'
 import { CreateUserDto } from '../dtos/createUserDto'
-import { Repository } from 'typeorm'
+import { UsersService } from '../services/users.service'
 
 @Injectable()
 export class VerifyEmail implements PipeTransform {
-  constructor(
-    @InjectRepository(User)
-    private readonly adminUserRepository: Repository<User>
-  ) {}
+  constructor(private readonly userService: UsersService) {}
 
   public async transform(
     value: CreateUserDto,
     metadata: ArgumentMetadata
   ): Promise<CreateUserDto> {
-    const result = await this.adminUserRepository.findOne({
-      where: { email: value.email },
-    })
-
-    console.log(metadata)
+    const result = await this.userService.FindByEmail(value.email)
 
     if (result) {
       throw new UnauthorizedException('this user already exists')

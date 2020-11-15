@@ -12,7 +12,6 @@ import { ValidationPipe } from './shared/pipes/validationSchema.pipe'
 import { GraphQLModule } from '@nestjs/graphql'
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import envVariables from './config/envVariables'
-import { join } from 'path'
 
 @Module({
   imports: [
@@ -21,11 +20,14 @@ import { join } from 'path'
       envFilePath: '.env',
       load: [envVariables],
     }),
+
+    GraphQLModule.forRoot({
+      autoSchemaFile: true,
+      playground: true,
+      include: [CoursesModule, AuthModule],
+      context: ({ req }) => ({ req }),
+    }),
     TypeOrmModule.forRoot(),
-    /*    GraphQLModule.forRoot({
-      include: [CoursesModule],
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-    }), */
 
     UserModule,
     AuthModule,
